@@ -1,0 +1,59 @@
+name: 'Allure Reporting'
+description: 'Generates, archives, & publishes Allure reports.'
+
+inputs:
+  allure-history:
+    description: 'The relative path to the folder, that will be published to Github Pages.'
+    default: 'allure-history'
+  allure-history-size:
+    description: 'The max number of Allure histories to maintain.'
+    default: 60
+  allure-reports:
+    description: 'The relative path to the directory where Allure will write the generated report.'
+    default: 'allure-report'
+  pages-branch:
+    description: 'The branch published for github-pages.'
+    default: 'gh-pages'
+  testng-results:
+    description: 'The TestNG test results directory, used by Allure.'
+    default: 'target/surefire-reports'
+  add-summary:
+    description: 'Adds Github Action Summary Step output'
+    default: 'true'
+  github-token:
+    description: 'The github token used for publishing.'
+    required: true
+
+
+runs:
+  using: composite
+  steps:
+    - name: Get Allure history
+      continue-on-error: true
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.pages-branch }}
+        path: ${{ inputs.pages-branch }}
+
+    - name: Generate Allure report
+      uses: simple-elf/allure-report-action@v1.6
+      with:
+        allure_results: target/surefire-reports
+        gh_pages: ${{ inputs.pages-branch }}
+        allure_report: ${{ inputs.allure-reports }}
+        allure_history: ${{ inputs.allure-history }}
+        keep_reports: ${{ inputs.allure-history-size }}
+
+    - name: Deploy Allure to Github Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ inputs.github-token }}
+        publish_branch: ${{ inputs.pages-branch }}
+        publish_dir: ${{ inputs.allure-history }}
+
+    - name: Add Allure Report URL to summary
+      if : ${{ inputs.add-summary == 'true' }}
+      run: |
+        echo "ALLURE URL https://${{ github.repository_owner }}.github.io/${{ github.repository }}" \
+        | sed s/"${{ github.repository_owner }}\/"// \ 
+        >> $GITHUB_STEP_SUMMARY

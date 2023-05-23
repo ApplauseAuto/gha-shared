@@ -1,0 +1,21 @@
+name: 'Java/Mvn Setup'
+description: 'Installs Java & Maven'
+
+inputs:
+  java-version:
+    description: 'The Java version, default: 17'
+    default: '17'
+  mvn-version:
+    description: 'The Maven version, default: 3.9.2'
+    default: '3.9.2'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v3
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: 'temurin'
+    - uses: stCarolas/setup-maven@v4.5
+      with:
+        maven-version: ${{ inputs.mvn-version }}
