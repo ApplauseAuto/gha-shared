@@ -53,6 +53,7 @@ runs:
 
     - name: Add Allure Report URL to summary
       if : ${{ inputs.add-summary == 'true' }}
+      shell: bash
       run: |
         echo "ALLURE URL https://${{ github.repository_owner }}.github.io/${{ github.repository }}" \
         | sed s/"${{ github.repository_owner }}\/"// \ 
