@@ -51,6 +51,16 @@ This action performs Allure reporting tasks.
 
 It generates reports from TestNG results, manages history and publishes to Github Pages
 
+### Requirements
+The `pages-branch` (default: `gh-pages`) must be precreated and marked as the github-pages branch for your repository.
+
+To make this branch default github-pages for your repository:
+* Go to your repository on github.com.
+* Click repository `Settings`
+* Click `Pages` subsection from left-side menu
+* In `GitHub Pages visibility` section, mark as `Private`. This restricts the pages to users that have access to the repository.
+* In `Build and deployment` section, mark `source: Deploy from a branch` and `branch: gh-pages / (root)`
+
 ### Usage
 
 #### Inputs
