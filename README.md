@@ -16,6 +16,8 @@ This action installs maven and java on your host machine.
   * default: `17`
 * `mvn-version`: specifies the maven version to install
   * default: `3.9.2`
+* `use-mvn-cache`: specifies usage of maven cache, when available
+  * default: `false`
 
 #### Example usage
 
@@ -34,6 +36,7 @@ jobs:
       with:
         java-version: 21
         mvn-version: 3.9.2
+        use-mvn-cache: 'true'
 
     - name: TestNG SDK tests
       env:
@@ -94,7 +97,7 @@ jobs:
 
   steps:
     - uses: actions/checkout@v3
-    - uses: ApplauseAuto/gha-shared/.github/actions/mvn_java_setup@v1
+    - uses: ApplauseAuto/gha-shared/.github/actions/mvn_java_setup@v0.0.2
 
     - name: TestNG SDK tests
       env:
@@ -105,7 +108,7 @@ jobs:
         -DdriverConfig=some-driver.json \
         -DproductId=123
 
-    - uses: ApplauseAuto/gha-shared/.github/actions/allure_reporting@v1
+    - uses: ApplauseAuto/gha-shared/.github/actions/allure_reporting@v0.0.2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
