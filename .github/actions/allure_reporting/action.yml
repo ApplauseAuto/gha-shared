@@ -17,9 +17,6 @@ inputs:
   pages-branch:
     description: 'The branch published for github-pages.'
     default: 'gh-pages'
-  testng-results:
-    description: 'The TestNG test results directory, used by Allure.'
-    default: 'target/surefire-reports'
   add-summary:
     description: 'Adds Github Action Summary Step output'
     default: 'true'
