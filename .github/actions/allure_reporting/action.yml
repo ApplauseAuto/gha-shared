@@ -11,6 +11,9 @@ inputs:
   allure-reports:
     description: 'The relative path to the directory where Allure will write the generated report.'
     default: 'allure-report'
+  allure-results:
+    description: 'The relative path to the directory where Allure will write results artifacts.'
+    default: 'target/allure-results'  
   pages-branch:
     description: 'The branch published for github-pages.'
     default: 'gh-pages'
@@ -38,7 +41,7 @@ runs:
     - name: Generate Allure report
       uses: simple-elf/allure-report-action@v1.6
       with:
-        allure_results: target/surefire-reports
+        allure_results: ${{ inputs.allure-results }}
         gh_pages: ${{ inputs.pages-branch }}
         allure_report: ${{ inputs.allure-reports }}
         allure_history: ${{ inputs.allure-history }}
