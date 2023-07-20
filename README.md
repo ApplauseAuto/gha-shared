@@ -74,10 +74,10 @@ To make this branch default github-pages for your repository:
   * default: `60`
 * `allure-reports`: The relative path to the directory where Allure will write the generated report.
   * *default*: `allure-report`
+* `allure-results`: The relative path to the directory where Allure will keep report artifacts.
+  * *default*: `target/allure-results`
 * `pages-branch`: The Github Pages branch (and relative path/directory) to publish 
   * default: `gh-pages`
-* `testng-results`: The TestNG test results directory, used by Allure.
-  * default: `target/surefire-reports`
 * `add-summary`: Adds Github Action Summary Step output
   * default: `true`
 * `github-token`: The github token used for publishing to Github Pages.
