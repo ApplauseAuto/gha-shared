@@ -23,6 +23,8 @@ inputs:
   github-token:
     description: 'The github token used for publishing.'
     required: true
+  allure-subfolder:
+    description: 'Subfolder for matrix runs'
 
 
 runs:
@@ -43,6 +45,7 @@ runs:
         allure_report: ${{ inputs.allure-reports }}
         allure_history: ${{ inputs.allure-history }}
         keep_reports: ${{ inputs.allure-history-size }}
+        subfolder: ${{ inputs.allure-subfolder }}
 
     - name: Deploy Allure to Github Pages
       uses: peaceiris/actions-gh-pages@v3
