@@ -1,0 +1,36 @@
+name: 'Allure Email'
+description: 'Sends email link for Allure Report.'
+
+inputs:
+  recipients:
+    description: 'CSV list of recipients to receive Allure email'
+    default: ''
+  subject:
+    description: 'The email Subject line'
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Prepare Email
+      shell: bash
+      run: |
+        ALLURE_URL=$( echo "https://${{ github.repository_owner }}.github.io/${{ github.repository }}" | sed s/"${{ github.repository_owner }}\/"// )
+        echo "ALLURE_URL=${ALLURE_URL}" >> $GITHUB_ENV
+        DEFAULT_EMAIL_SUBJECT=$( echo ${{ github.repository }} Allure report $(date +'%d/%m/%yT%H:%M') )
+        echo "ALLURE_DEFAULT_EMAIL_SUBJECT=${DEFAULT_EMAIL_SUBJECT}" >> $GITHUB_ENV
+
+    - name: Send Allure Emails
+      if: |
+        contains(runner.name, 'applauseauto-customer')
+        && inputs.recipients != ''
+      env:
+        # if/else logic to toggle custom/default email-subject
+        ALLURE_EMAIL_SUBJECT: ${{ (inputs.subject != '' && inputs.subject) || env.ALLURE_DEFAULT_EMAIL_SUBJECT }}
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: mailer-ses
+        from: noreply@applause.com
+        bcc: ${{ inputs.recipients }}
+        subject: ${{ env.ALLURE_EMAIL_SUBJECT }}
+        body: "A new Allure report entry was added: ${{ env.ALLURE_URL }}"
