@@ -76,6 +76,7 @@ To make this branch default github-pages for your repository:
   * *default*: `allure-report`
 * `allure-results`: The relative path to the directory where Allure will keep report artifacts.
   * *default*: `target/allure-results`
+* * `allure-subfolder`: The subdirectory where Allure will keep report artifacts for matrix runs.
 * `pages-branch`: The Github Pages branch (and relative path/directory) to publish 
   * default: `gh-pages`
 * `add-summary`: Adds Github Action Summary Step output
