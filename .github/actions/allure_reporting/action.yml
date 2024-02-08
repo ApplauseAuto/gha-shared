@@ -23,6 +23,8 @@ inputs:
   github-token:
     description: 'The github token used for publishing.'
     required: true
+  allure-subfolder:
+    description: 'Subfolder for matrix runs'
 
 
 runs:
@@ -36,13 +38,14 @@ runs:
         path: ${{ inputs.pages-branch }}
 
     - name: Generate Allure report
-      uses: simple-elf/allure-report-action@v1.6
+      uses: simple-elf/allure-report-action@v1.8
       with:
         allure_results: ${{ inputs.allure-results }}
         gh_pages: ${{ inputs.pages-branch }}
         allure_report: ${{ inputs.allure-reports }}
         allure_history: ${{ inputs.allure-history }}
         keep_reports: ${{ inputs.allure-history-size }}
+        subfolder: ${{ inputs.allure-subfolder }}
 
     - name: Deploy Allure to Github Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -54,4 +57,4 @@ runs:
     - name: Add Allure Report URL to summary
       if : ${{ inputs.add-summary == 'true' }}
       shell: bash
-      run: echo "ALLURE URL https://${{ github.repository_owner }}.github.io/${{ github.repository }}" | sed s/"${{ github.repository_owner }}\/"// >> $GITHUB_STEP_SUMMARY
+      run: echo "ALLURE URL https://${{ github.repository_owner }}.github.io/${{ github.repository }}/${{ inputs.allure-subfolder }}" | sed s/"${{ github.repository_owner }}\/"// >> $GITHUB_STEP_SUMMARY
