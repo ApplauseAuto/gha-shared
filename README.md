@@ -165,11 +165,86 @@ jobs:
   # configuring this as a separate job, 
   # depending on previous job eg: [needs: your-job-name]
   # prevents duplicate emails when using matrix-driven tests, ensuring it only runs once at the end
-  email-job:
+  deploy-job:
     runs-on: [self-hosted, opsvpc-customer, small]
     needs: your-job-name
+    permissions: 
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: ApplauseAuto/gha-shared/.github/actions/allure_deploy@v0.0.5
+
+  # configuring this as a separate job, 
+  # depending on previous job eg: [needs: deploy-job]
+  # prevents duplicate emails when using matrix-driven tests, ensuring it only runs once at the end
+  email-job:
+    runs-on: [self-hosted, opsvpc-customer, small]
+    needs: deploy-job
+    steps:
+      - uses: ApplauseAuto/gha-shared/.github/actions/allure_email@v0.0.4
+        with:
+          recipients: user1@applause.com, user2@applause.com
+```
+
+## allure_deploy
+This action publishes the github pages branch to the hosted url.
+
+### Requirements
+The repository should be configured for github-pages hosting (recommended using the action `allure_reporting`)
+
+### Usage
+
+#### Inputs
+
+* `pages_directory`: The directory inside of the pages-branch that allure reports are deployed to'
+  * default: `.`
+  * notes: `.` publishes the entire
+* `pages_branch`: The branch published for github-pages.
+  * default: gha-pages
+
+#### Outputs
+
+* `page_url`: URL to deployed GitHub Pages
+
+#### Example usage
+
+```yaml
+name: Your Workflow Name
+
+on: push
+
+jobs:
+  your-job-name:
+    runs-on: [self-hosted, opsvpc-customer, small]
+
   steps:
-    - uses: ApplauseAuto/gha-shared/.github/actions/allure_email@v0.0.4
+    - uses: actions/checkout@v3
+    - uses: ApplauseAuto/gha-shared/.github/actions/mvn_java_setup@v0.0.4
+
+    - name: TestNG SDK tests
+      env:
+        apiKey: ${{ secrets.YOUR_SDK_API_KEY }}
+      run: |
+        mvn --no-transfer-progress test -Dexecution=clientSide -DdownloadResults=never \
+        -DsuiteFile=some-Test.xml \
+        -DdriverConfig=some-driver.json \
+        -DproductId=123
+
+    - uses: ApplauseAuto/gha-shared/.github/actions/allure_reporting@v0.0.4
       with:
-        recipients: user1@applause.com, user2@applause.com
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  # configuring this as a separate job, 
+  # depending on previous job eg: [needs: your-job-name]
+  # prevents duplicate emails when using matrix-driven tests, ensuring it only runs once at the end
+  deploy-job:
+    runs-on: [self-hosted, opsvpc-customer, small]
+    needs: your-job-name
+    permissions: 
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: ApplauseAuto/gha-shared/.github/actions/allure_deploy@v0.0.5
 ```
