@@ -1,0 +1,37 @@
+name: 'Custom Composite Github Pages Deploy'
+description: 'Publishes Allure reports.'
+
+inputs:
+  pages-directory:
+    description: 'The directory inside of the pages-branch that allure reports are deployed to'
+    # Default uploads the entire branch
+    default: '.'
+  pages-branch:
+    description: 'The branch published for github-pages.'
+    default: 'gh-pages'
+outputs:
+  page_url:
+    description: 'URL to deployed GitHub Pages'
+    value: ${{ steps.deployment.outputs.page_url }}
+
+# For this action to complete successfully, the GH Token needs to have the following permissions:
+# permissions:
+#   contents: read
+#   pages: write
+#   id-token: write
+runs:
+  using: composite  
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.pages-branch }}
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: ${{ inputs.pages-directory }}
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
