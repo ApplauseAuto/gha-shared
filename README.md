@@ -29,7 +29,7 @@ on: push
 
 jobs:
   your-job-name:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: [ applauseauto-customer-auto-small-arm64 ]
 
   steps:
     - uses: actions/checkout@v3
