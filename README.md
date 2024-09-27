@@ -29,7 +29,7 @@ on: push
 
 jobs:
   your-job-name:
-    runs-on: [ applauseauto-customer-auto-small-arm64 ]
+    runs-on: applauseauto-customer-auto-small-arm64
 
   steps:
     - uses: actions/checkout@v3
@@ -95,7 +95,7 @@ on: push
 
 jobs:
   your-job-name:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: applauseauto-customer-auto-small-arm64
 
   steps:
     - uses: actions/checkout@v3
@@ -143,7 +143,7 @@ on: push
 
 jobs:
   your-job-name:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: applauseauto-customer-auto-small-arm64
 
   steps:
     - uses: actions/checkout@v3
@@ -166,7 +166,7 @@ jobs:
   # depending on previous job eg: [needs: your-job-name]
   # prevents duplicate emails when using matrix-driven tests, ensuring it only runs once at the end
   deploy-job:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: applauseauto-customer-auto-small-arm64
     needs: your-job-name
     permissions: 
       contents: read
@@ -179,7 +179,7 @@ jobs:
   # depending on previous job eg: [needs: deploy-job]
   # prevents duplicate emails when using matrix-driven tests, ensuring it only runs once at the end
   email-job:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: applauseauto-customer-auto-small-arm64
     needs: deploy-job
     steps:
       - uses: ApplauseAuto/gha-shared/.github/actions/allure_email@v0.0.4
@@ -216,7 +216,7 @@ on: push
 
 jobs:
   your-job-name:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: applauseauto-customer-auto-small-arm64
 
   steps:
     - uses: actions/checkout@v3
@@ -239,7 +239,7 @@ jobs:
   # depending on previous job eg: [needs: your-job-name]
   # prevents duplicate emails when using matrix-driven tests, ensuring it only runs once at the end
   deploy-job:
-    runs-on: [self-hosted, opsvpc-customer, small]
+    runs-on: applauseauto-customer-auto-small-arm64
     needs: your-job-name
     permissions: 
       contents: read
