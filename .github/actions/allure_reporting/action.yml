@@ -38,7 +38,7 @@ runs:
         path: ${{ inputs.pages-branch }}
 
     - name: Generate Allure report
-      uses: simple-elf/allure-report-action@v1.8
+      uses: simple-elf/allure-report-action@v1.12
       with:
         allure_results: ${{ inputs.allure-results }}
         gh_pages: ${{ inputs.pages-branch }}
